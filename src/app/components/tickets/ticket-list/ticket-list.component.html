@@ -1,0 +1,71 @@
+<h2>🎫 Ticket List</h2>
+
+<!-- 🔍 FILTERS -->
+<div class="filters">
+  <input
+    type="text"
+    placeholder="Search tickets..."
+    [(ngModel)]="searchText"
+    (input)="applyFilter()"
+  />
+
+  <select [(ngModel)]="selectedStatus" (change)="applyFilter()">
+    <option value="ALL">All</option>
+    <option value="OPEN">OPEN</option>
+    <option value="IN_PROGRESS">IN_PROGRESS</option>
+    <option value="RESOLVED">RESOLVED</option>
+    <option value="CLOSED">CLOSED</option>
+  </select>
+</div>
+
+<!-- 📊 TABLE -->
+<table class="ticket-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Assigned To</th>
+      <th>Created By</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let ticket of filteredTickets">
+      <td>{{ ticket.id }}</td>
+      <td>{{ ticket.title }}</td>
+
+      <!-- 🔄 STATUS DROPDOWN -->
+      <td>
+        <select
+          [value]="ticket.status"
+          (change)="updateStatus(ticket.id, $event)"
+        >
+          <option value="OPEN">OPEN</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="RESOLVED">RESOLVED</option>
+          <option value="CLOSED">CLOSED</option>
+        </select>
+      </td>
+     <td>
+  <select
+  [(ngModel)]="ticket.assignedTo"
+  (ngModelChange)="assignUser(ticket.id, $event)"
+>
+  <option [ngValue]="null">Unassigned</option>
+
+  <option *ngFor="let user of users" [ngValue]="user.id">
+    {{ user.name }}
+  </option>
+</select>
+</td>
+
+      <td>{{ ticket.createdBy?.name }}</td>
+
+      <td>
+        <button (click)="view(ticket.id)">View</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

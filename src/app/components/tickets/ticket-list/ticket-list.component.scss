@@ -1,0 +1,38 @@
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+input, select {
+  padding: 6px;
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.ticket-table th {
+  background: #1976d2;
+  color: white;
+  padding: 10px;
+}
+
+.ticket-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.ticket-table tr:hover {
+  background: #f5f5f5;
+}
+
+button {
+  padding: 5px 10px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}

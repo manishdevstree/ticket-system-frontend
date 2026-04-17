@@ -1,0 +1,30 @@
+<div class="detail-page" *ngIf="ticket">
+  <div class="ticket-box">
+    <h2>{{ ticket.title }}</h2>
+    <p>{{ ticket.description }}</p>
+
+    <div class="meta">
+      <span>Status: {{ ticket.status }}</span>
+      <span>Created By: {{ ticket.createdBy?.name }}</span>
+    </div>
+  </div>
+
+  <!-- 💬 COMMENTS -->
+  <div class="comments-box">
+    <h3>Comments</h3>
+
+    <div *ngFor="let c of comments" class="comment">
+      <strong>{{ c.createdBy?.name }}</strong>
+      <p>{{ c.message }}</p>
+    </div>
+
+    <!-- ➕ Add Comment -->
+    <div class="add-comment">
+      <input
+        [(ngModel)]="message"
+        placeholder="Write a comment..."
+      />
+      <button (click)="addComment()">Send</button>
+    </div>
+  </div>
+</div>
