@@ -8,37 +8,39 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./ticket-details.component.scss']
 })
 export class TicketDetailsComponent {
-ticket: any;
+ ticketId!: number;
+  ticket: any;
   comments: any[] = [];
-  message = '';
+  newComment = '';
 
   constructor(private route: ActivatedRoute, private api: ApiService) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.params['id'];
+    this.ticketId = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.loadTicket(id);
-    this.loadComments(id);
+    this.loadTicket();
+    this.loadComments();
   }
 
-  loadTicket(id: number) {
-    this.api.getTickets().subscribe((res: any) => {
-      this.ticket = res.data.find((t: any) => t.id == id);
+  loadTicket() {
+    this.api.getTicketById(this.ticketId).subscribe((res: any) => {
+      this.ticket = res.data || res;
     });
   }
 
-  loadComments(id: number) {
-    this.api.getComments(id).subscribe((res: any) => {
-      this.comments = res;
+  loadComments() {
+    this.api.getComments(this.ticketId).subscribe((res: any) => {
+      this.comments = res.data || res;
     });
   }
 
   addComment() {
-    const id = this.route.snapshot.params['id'];
-
-    this.api.addComment(id, this.message).subscribe(() => {
-      this.message = '';
-      this.loadComments(id);
-    });
+    if (!this.newComment) return;
+    
+    this.api.addComment(this.ticketId, this.newComment)
+      .subscribe(() => {
+        this.newComment = '';
+        this.loadComments();
+      });
   }
 }

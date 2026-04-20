@@ -1,30 +1,35 @@
-<div class="detail-page" *ngIf="ticket">
-  <div class="ticket-box">
-    <h2>{{ ticket.title }}</h2>
+<div class="detail-page">
+
+  <h2>🎫 Ticket Detail</h2>
+
+  <!-- 🎫 TICKET -->
+  <div *ngIf="ticket" class="ticket-box">
+    <h3>{{ ticket.title }}</h3>
     <p>{{ ticket.description }}</p>
 
     <div class="meta">
-      <span>Status: {{ ticket.status }}</span>
-      <span>Created By: {{ ticket.createdBy?.name }}</span>
+      <span><b>Status:</b> {{ ticket.status }}</span>
+      <span><b>Created By:</b> {{ ticket.createdBy?.name }}</span>
     </div>
   </div>
 
   <!-- 💬 COMMENTS -->
   <div class="comments-box">
-    <h3>Comments</h3>
+    <h3>💬 Comments</h3>
 
     <div *ngFor="let c of comments" class="comment">
-      <strong>{{ c.createdBy?.name }}</strong>
+      <b>{{ c.createdBy?.name }}</b>
       <p>{{ c.message }}</p>
     </div>
 
-    <!-- ➕ Add Comment -->
+    <!-- ➕ ADD COMMENT -->
     <div class="add-comment">
       <input
-        [(ngModel)]="message"
-        placeholder="Write a comment..."
+        [(ngModel)]="newComment"
+        placeholder="Write comment..."
       />
       <button (click)="addComment()">Send</button>
     </div>
   </div>
+
 </div>

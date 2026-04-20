@@ -20,7 +20,10 @@ export class LoginComponent {
   onLogin() {
     this.api.login(this.form).subscribe({
       next: (res: any) => {
+        console.log(res);
+        
         localStorage.setItem('token', res.access_token);
+        localStorage.setItem('user', JSON.stringify(res.user));
         this.router.navigate(['/tickets']); // ✅ redirect
       },
       error: () => {

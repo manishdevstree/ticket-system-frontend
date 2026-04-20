@@ -29,19 +29,35 @@ export class ApiService {
 
   updateStatus(ticketId: number, status: string) {
     return this.http.patch(
-      `http://localhost:3000/tickets/${ticketId}/status`,
+      `${this.baseUrl}/tickets/${ticketId}/status`,
       { status }
     );
   }
 
   getUsers() {
-  return this.http.get('http://localhost:3000/users');
+  return this.http.get(`${this.baseUrl}/users`);
 }
 
 assignTicket(ticketId: number, userId: number) {
   return this.http.patch(
-    `http://localhost:3000/tickets/${ticketId}/assign/${userId}`,
+    `${this.baseUrl}/tickets/${ticketId}/assign/${userId}`,
     {  }
   );
 }
+createTicket(data: any) {
+  return this.http.post(`${this.baseUrl}/tickets`, data);
+}
+
+updateTicket(id: number, data: any) {
+  return this.http.patch(`${this.baseUrl}/tickets/${id}`, data);
+}
+
+deleteTicket(id: number) {
+  return this.http.delete(`${this.baseUrl}/tickets/${id}`);
+}
+
+getTicketById(id: number) {
+  return this.http.get(`${this.baseUrl}/tickets/${id}`);
+}
+
 }

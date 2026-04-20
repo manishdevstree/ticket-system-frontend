@@ -1,0 +1,13 @@
+<div *ngIf="currentUser" class="header">
+  <div class="left">
+    <h3>🎫 Ticket System</h3>
+  </div>
+
+  <div class="right" *ngIf="currentUser">
+    <span>
+      👤 {{ currentUser?.name }} ({{ currentUser?.role }})
+    </span>
+
+    <button (click)="logout()">Logout</button>
+  </div>
+</div>

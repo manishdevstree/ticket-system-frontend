@@ -18,6 +18,28 @@
   </select>
 </div>
 
+<!-- ➕ CREATE BUTTON -->
+<button *ngIf="isAdmin() || isUser()" (click)="toggleForm()">
+  ➕ Create Ticket
+</button>
+
+<!-- 📝 CREATE FORM -->
+<div *ngIf="showForm" class="form-box">
+  <h3>Create Ticket</h3>
+
+  <input type="text" placeholder="Title" [(ngModel)]="newTicket.title" />
+
+  <textarea
+    placeholder="Description"
+    [(ngModel)]="newTicket.description"
+  ></textarea>
+
+  <div class="form-actions">
+    <button (click)="createTicket()">Submit</button>
+    <button (click)="toggleForm()">Cancel</button>
+  </div>
+</div>
+
 <!-- 📊 TABLE -->
 <table class="ticket-table">
   <thead>
@@ -37,7 +59,7 @@
       <td>{{ ticket.title }}</td>
 
       <!-- 🔄 STATUS DROPDOWN -->
-      <td>
+      <td *ngIf="isAdmin() || isAgent(); else statusText">
         <select
           [value]="ticket.status"
           (change)="updateStatus(ticket.id, $event)"
@@ -48,24 +70,53 @@
           <option value="CLOSED">CLOSED</option>
         </select>
       </td>
-     <td>
-  <select
-  [(ngModel)]="ticket.assignedTo"
-  (ngModelChange)="assignUser(ticket.id, $event)"
->
-  <option [ngValue]="null">Unassigned</option>
 
-  <option *ngFor="let user of users" [ngValue]="user.id">
-    {{ user.name }}
-  </option>
-</select>
-</td>
+      <ng-template #statusText>
+        <td>{{ ticket.status }}</td>
+      </ng-template>
+      <td *ngIf="isAdmin(); else assignedText">
+        <select
+          [(ngModel)]="ticket.assignedTo"
+          (ngModelChange)="assignUser(ticket.id, $event)"
+        >
+          <option [ngValue]="null">Unassigned</option>
+          <option *ngFor="let user of users" [ngValue]="user.id">
+            {{ user.name }}
+          </option>
+        </select>
+      </td>
+
+      <ng-template #assignedText>
+        <td>{{ ticket.assignedTo }}</td>
+      </ng-template>
 
       <td>{{ ticket.createdBy?.name }}</td>
 
-      <td>
-        <button (click)="view(ticket.id)">View</button>
-      </td>
+     <td>
+  <button (click)="view(ticket.id)">View</button>
+
+  <button *ngIf="isAdmin()" (click)="startEdit(ticket)">
+    Edit
+  </button>
+
+  <button *ngIf="isAdmin()" (click)="deleteTicket(ticket.id)">
+    Delete
+  </button>
+</td>
     </tr>
   </tbody>
 </table>
+
+<!-- ✏️ EDIT FORM -->
+<div *ngIf="editingTicket" class="form-box">
+  <h3>Edit Ticket</h3>
+
+  <input type="text" [(ngModel)]="editingTicket.title" />
+
+  <textarea [(ngModel)]="editingTicket.description"></textarea>
+
+  <div class="form-actions">
+    <button (click)="updateTicket()">Update</button>
+    <button (click)="cancelEdit()">Cancel</button>
+  </div>
+</div>
